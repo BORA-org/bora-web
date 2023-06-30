@@ -1,10 +1,11 @@
-import React from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import Login from './pages/Login';
 import EventList from './pages/EventList';
 import AddEvent from './pages/AddEvent';
 import EditEvent from './pages/EditEvent';
+
+import ProtectRoute from './services/ProtectRoute';
 
 const router = createBrowserRouter([
   {
@@ -13,15 +14,24 @@ const router = createBrowserRouter([
   },
   {
     path: "/event-list",
-    element: <EventList />,
+    element:
+      <ProtectRoute>
+        <EventList />
+      </ProtectRoute>,
   },
   {
     path: "/add-event",
-    element: <AddEvent />,
+    element:
+      <ProtectRoute>
+        <AddEvent />
+      </ProtectRoute>,
   },
   {
     path: "/edit-event",
-    element: <EditEvent />,
+    element:
+      <ProtectRoute>
+        <EditEvent />
+      </ProtectRoute>,
   },
 ]);
 
