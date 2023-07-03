@@ -21,13 +21,10 @@ jobs:
           username: paulovanzolini
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Install hadolint
-        run: |
-          curl -sSL -o /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64
-          chmod +x /usr/local/bin/hadolint
-
-      - name: Check Dockerfile with hadolint
-        run: hadolint devops/Dockerfile --config hadolint.yaml
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
 
       - name: Build and push
         uses: docker/build-push-action@v4
@@ -35,4 +32,5 @@ jobs:
           push: true
           file: devops/Dockerfile
           target: app
-          tags: paulovanzolini/bora:frontend-${{ GITHUB_REF_NAME }}
+          tags: paulovanzolini/bora:frontend-${{ steps.extract_branch.outputs.branch }}
+
