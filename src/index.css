@@ -21,3 +21,35 @@
     font-family: "Gilroy-Bold";
     src: url("assets/fonts/gilroy/Gilroy-Bold.ttf");
 }
+
+.my-swal-title {
+    color: #282828 !important;;
+    text-align: center !important;;
+    font-size: 32px !important;;
+    font-family: Gilroy-Bold !important;;
+    line-height: 24px !important; 
+}
+
+.my-swal-container {
+    color: #282828 !important;
+    text-align: center !important;
+    font-size: 14px !important; 
+    font-family: Gilroy-Regular !important;
+    line-height: 24px !important;
+}
+
+.my-swal-confirm-button {
+    font-family: Gilroy-Bold !important;
+    color: #282828 !important;
+    background-color: #FDCF01 !important;
+}
+
+.my-swal-cancel-button {
+    border-radius: 5px !important;
+    background: #C1C1C1 !important; 
+    color: #FFF !important;
+    text-align: center !important;
+    font-size: 14px !important;
+    font-family: Gilroy-Bold !important;
+    line-height: 24px !important; 
+}
