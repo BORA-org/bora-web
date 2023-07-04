@@ -1,28 +1,21 @@
-import React from 'react';
+import React, { ButtonHTMLAttributes } from 'react';
 
-interface ButtonProps {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     text: string;
-    onClick?: () => void;
-    type?: "button" | "submit" | "reset";
     textColor?: string;
     backgroundColor?: string;
     width?: string;
-    disabled?: boolean;
 }
 
 const Button = ({
     text,
-    onClick,
-    type = 'button',
     textColor = 'text-gray-g5',
     backgroundColor = 'bg-yellow-y4',
     width = 'w-[394px]',
-    disabled = false,
+    ...props
 }: ButtonProps) => (
     <button
-        type={type}
-        disabled={disabled}
-        onClick={onClick}
+        {...props}
         className={`
             ${width} 
             ${textColor} 
