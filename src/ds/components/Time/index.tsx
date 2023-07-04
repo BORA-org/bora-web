@@ -8,6 +8,7 @@ interface TimeProps {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   width?: string;
   height?: string;
+  required?: boolean;
 }
 
 const Time = ({
@@ -15,12 +16,14 @@ const Time = ({
   value,
   onChange,
   width = 'w-[69px]',
-  height = 'h-[55px]'
+  height = 'h-[55px]',
+  required = false,
 }: TimeProps) => (
   <InputMask
     name={name}
     value={value}
     onChange={onChange}
+    required={required}
     mask="99:99"
     placeholder="00:00"
     maskChar={null}

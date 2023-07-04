@@ -1,11 +1,11 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
-export const get = async <T>(url: string): Promise<T> => {
-    const response: AxiosResponse<T> = await axios.get(url);
-    return response.data;
-};
+const API: AxiosInstance = axios.create({
+    baseURL: 'http://3.139.60.209/api',
+    headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer your_token_here' // Insira o token de autorização adequado
+    }
+});
 
-export const post = async <T>(url: string, data: any): Promise<T> => {
-    const response: AxiosResponse<T> = await axios.post(url, data);
-    return response.data;
-};
+export default API;

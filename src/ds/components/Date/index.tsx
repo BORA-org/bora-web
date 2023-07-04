@@ -8,6 +8,7 @@ interface DateProps {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   width?: string;
   height?: string;
+  required?: boolean;
 }
 
 const Date = ({
@@ -15,12 +16,14 @@ const Date = ({
   value,
   onChange,
   width = 'w-[138px]',
-  height = 'h-[55px]'
+  height = 'h-[55px]',
+  required = false,
 }: DateProps) => (
   <InputMask
     name={name}
     value={value}
     onChange={onChange}
+    required={required}
     mask="99/99/9999"
     placeholder="00/00/0000"
     maskChar={null}

@@ -7,6 +7,7 @@ interface TextAreaProps {
   placeholder?: string;
   width?: string;
   height?: string;
+  required?: boolean;
 }
 
 const TextArea = ({
@@ -15,7 +16,8 @@ const TextArea = ({
   onChange,
   placeholder,
   width = 'w-[690px]',
-  height = 'h-[350px]'
+  height = 'h-[350px]',
+  required = false,
 }: TextAreaProps) => {
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const newEvent = {
@@ -33,6 +35,7 @@ const TextArea = ({
       value={value}
       onChange={handleChange}
       placeholder={placeholder}
+      required={required}
       className={`
         ${width}
         ${height} 

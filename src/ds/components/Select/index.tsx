@@ -12,6 +12,7 @@ interface SelectProps {
 	onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
 	width?: string;
 	height?: string;
+	required?: boolean;
 }
 
 const Select = ({
@@ -20,12 +21,14 @@ const Select = ({
 	value,
 	onChange,
 	width = 'w-full',
-	height = 'h-[55px]'
+	height = 'h-[55px]',
+	required = false,
 }: SelectProps) => (
 	<select
 		name={name}
 		value={value}
 		onChange={onChange}
+		required={required}
 		className={`
 			${width} 
 			${height} 
@@ -38,6 +41,7 @@ const Select = ({
 			text-base 
 			leading-none 
 			text-gray-g5
+			bg-transparent
 		`}
 	>
 		{data.map((item, index) => <option key={index} value={item.value}>{item.label}</option>)}

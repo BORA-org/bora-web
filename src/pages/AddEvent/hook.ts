@@ -1,10 +1,14 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { AxiosResponse } from "axios";
 
+import SwalMixin from "../../ds/components/SwalMixin";
 import { Image } from "../../ds/components/PreviewImage";
-import { post } from "../../services/Api";
+
 import { Event } from "../../models/Event";
 import { Location } from "../../models/Location";
 import { Ticket } from "../../models/Ticket";
+
+import API from "../../services/Api";
 
 import { convertDateTime, convertToNumber } from "../../utils/converters";
 
@@ -86,6 +90,10 @@ const useForm = (initialFormValues: FormValues, initialImageValues: ImageValues)
         }
     };
 
+    const handleValidate = (): boolean => {
+        return true;
+    };
+
     const getLocation = (): Location => {
         return {
             number: formValues.number,
@@ -103,7 +111,7 @@ const useForm = (initialFormValues: FormValues, initialImageValues: ImageValues)
         } as Ticket;
     };
 
-    const getEvent = (location: Location, ticket: Ticket): Event => {
+    const getEvent = (location: AxiosResponse<Location>, ticket: AxiosResponse<Ticket>): Event => {
         return {
             title: formValues.title,
             organization: formValues.responsible,
@@ -117,25 +125,41 @@ const useForm = (initialFormValues: FormValues, initialImageValues: ImageValues)
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const api: string = 'http://3.139.60.209/v3/api';
-        try {
-            const locationResponse = await post<Location>(`${api}/locations`, getLocation());
-            console.log(locationResponse);
+        if (handleValidate()) {
             try {
-                const ticketResponse = await post<Ticket>(`${api}/tickets`, getTicket());
-                console.log(ticketResponse);
+                const locationResponse: AxiosResponse<Location> = await API.post('locations', getLocation());
+                console.log(locationResponse);
                 try {
-                    const eventResponse = await post<Event>(`${api}/events`, getEvent(locationResponse, ticketResponse));
-                    console.log(eventResponse);
-                } catch (error) {
-                    console.error('Error to register event:', error);
+                    const ticketResponse: AxiosResponse<Ticket> = await API.post<Ticket>('tickets', getTicket());
+                    console.log(ticketResponse);
+                    try {
+                        const eventResponse: AxiosResponse<Event> = await API.post<Event>('events', getEvent(locationResponse, ticketResponse));
+                        console.log(eventResponse);
+                    } catch (error) {
+                        SwalMixin.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Ocorreu um problema ao registrar o evento',
+                        });
+                        console.error('Error to register event:', error);
 
+                    }
+                } catch (error) {
+                    SwalMixin.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Ocorreu um problema ao registrar o ticket',
+                    });
+                    console.error('Error to register location:', error);
                 }
             } catch (error) {
+                SwalMixin.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocorreu um problema ao registrar o endereço',
+                });
                 console.error('Error to register ticket:', error);
             }
-        } catch (error) {
-            console.error('Error to register location:', error);
         }
     };
 

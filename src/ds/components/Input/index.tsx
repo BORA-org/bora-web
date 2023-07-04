@@ -8,6 +8,7 @@ interface InputProps {
     placeholder?: string;
     width?: string;
     height?: string;
+    required?: boolean;
 }
 
 const Input = ({
@@ -17,7 +18,8 @@ const Input = ({
     type = 'text',
     placeholder,
     width = 'w-full',
-    height = 'h-[55px]'
+    height = 'h-[55px]',
+    required = false,
 }: InputProps) => (
     <input
         name={name}
@@ -25,13 +27,14 @@ const Input = ({
         onChange={onChange}
         type={type}
         placeholder={placeholder}
+        required={required}
         className={`
             ${width} 
             ${height} 
             p-2 
             border 
             rounded-[5px]
-            border-gray-g7 
+          border-gray-g7
             shadow-3xl 
             font-gilroy-regular 
             text-base 

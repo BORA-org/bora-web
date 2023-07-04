@@ -6,6 +6,7 @@ interface IOContextProps {
     children: ReactElement;
     marginLeft?: string;
     marginRight?: string;
+    required?: boolean;
 }
 
 const IOContext = ({ 
@@ -13,9 +14,10 @@ const IOContext = ({
     children,
     marginLeft = '',
     marginRight = '',
+    required = false,
 }: IOContextProps) => (
     <div className={`flex flex-col ${marginLeft} ${marginRight}`}>
-        <Label text={label} />
+        <Label text={label + (required ? ' *' : '')} />
         {children}
     </div>
 );

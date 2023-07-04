@@ -7,6 +7,7 @@ interface MoneyProps {
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     width?: string;
     height?: string;
+    required?: boolean;
 }
 
 const Money = ({
@@ -14,12 +15,14 @@ const Money = ({
     value,
     onChange,
     width = 'w-[125px]',
-    height = 'h-[55px]'
+    height = 'h-[55px]',
+    required = false,
 }: MoneyProps) => {    
     return (
         <InputMask
             name={name}
             value={value}
+            required={required}
             mask="R$ 9.999,99"
             onChange={onChange}
             placeholder="R$ 0,00"
