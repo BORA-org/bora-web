@@ -1,7 +1,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import Login from './pages/Login';
-import EventList from './pages/EventList';
+import { EventList } from './pages/EventList';
 import AddEvent from './pages/AddEvent';
 import EditEvent from './pages/EditEvent';
 
