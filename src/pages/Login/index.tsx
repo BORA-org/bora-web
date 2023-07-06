@@ -3,7 +3,7 @@ import axios, {AxiosResponse, AxiosError } from 'axios';
 import loginImage from "../../assets/img/login.png";
 
 interface LoginState {
-    cpfCnpj: string;
+    email: string;
     password: string;
     rememberPassword: boolean;
 }
@@ -14,7 +14,7 @@ interface ApiResponse {
   
 const Login: React.FC = () => {
     const [loginState, setLoginState] = useState<LoginState>({
-      cpfCnpj: '',
+      email: '',
       password: '',
       rememberPassword: false,
     });
@@ -23,15 +23,15 @@ const Login: React.FC = () => {
         e.preventDefault();
 
         const payload = {
-            email: loginState.cpfCnpj,
+            email: loginState.email,
             password: loginState.password
         }
 
-        axios.post<ApiResponse>('/api/autenticacao', payload)
+        axios.post<ApiResponse>('http://3.84.165.44:8080/api/authenticate', payload)
         .then((response: AxiosResponse<ApiResponse>) => {
             // Autenticação bem-sucedida, você pode obter o token de autenticação ou outras informações relevantes da resposta
             const token = response.data.token;
-            console.log('Autenticação bem-sucedida!');
+            console.log('Autenticação bem-sucedida!', token);
         })
         .catch((error: AxiosError) => {
             // Autenticação falhou, exiba uma mensagem de erro ou tome outras medidas apropriadas
@@ -55,12 +55,12 @@ const Login: React.FC = () => {
   
     return (
         <>
-        <div className="grid grid-cols-2 divide-x rounded-full" style={{margin: "200px"}}>
-            <div className="flex min-h-full flex-2 flex-col justify-center">
+        <div className="grid grid-cols-2 divide-x rounded-full" style={{margin: "300px"}}>
+            <div className="flex min-h-full flex-2 flex-col justify-center col-span-1">
                 <img src={loginImage} alt="Logo" />
             </div>
-            <div>
-                <div className="flex min-h-full flex-2 flex-col justify-center" style={{backgroundColor: "#ffeda0"}}>
+            <div className="col-span-1">
+                <div className="flex min-h-full flex-2 flex-col justify-center " style={{backgroundColor: "#ffeda0"}}>
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                         <h2 className="mt-10 text-center font-bold leading-0 tracking-tight text-gray-900"  style={{fontSize: "30px"}}>
                             Acesso ao sistema
@@ -69,18 +69,18 @@ const Login: React.FC = () => {
                     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                         <form className="space-y-6" onSubmit={handleLogin}>
                             <div>
-                                <label htmlFor="cpfCnpj" className="block text-sm font-medium leading-6 text-gray-900">
-                                    CPF/CNPJ:
+                                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                                    Email:
                                 </label>
                                 <div className="mt-2 scroll-pl-6">
                                     <input
-                                    id="cpfCnpj"
-                                    name="cpfCnpj"
+                                    id="email"
+                                    name="email"
                                     type="text"
-                                    autoComplete="cpfCnpj"
+                                    autoComplete="email"
                                     required
                                     placeholder='Digite seu CPF ou CNPJ'
-                                    value={loginState.cpfCnpj}
+                                    value={loginState.email}
                                     onChange={handleInputChange}
                                     className=" px-3 rounded-lg block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
                                     />
