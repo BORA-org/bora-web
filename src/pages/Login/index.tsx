@@ -51,15 +51,15 @@ const Login: React.FC = () => {
   
     return (
         <>
-        <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="flex bg-white rounded-3xl shadow-md my-20 sm:max-w-4xl">
-        <div className="w-11/12 bg-blue-500 rounded-l-3xl h-64 md:h-auto">
-            <img src={loginImage} alt="Logo" />
-        </div>
-        <div className="w-8/12 p-10 flex min-h-full flex-2 flex-col justify-center bg-gradient-to-b from-amber-200 to-yellow-100 rounded-r-3xl">
-          <h2 className="text-4xl font-gilroybold mb-7 text-center font-bold leading-0 tracking-tight">Acesso ao sistema</h2>
-          <form className="space-y-6 mx-6" onSubmit={handleLogin}>
-          <div>
+            <div className="flex items-center justify-center h-screen bg-gray-100">
+                <div className="flex flex-col-reverse md:flex-row rounded-3xl shadow shadow-gray-400 my-20 sm:max-w-4xl">
+                    <div className="w-full md:w-11/12 bg-blue-500 rounded-l-3xl h-64 md:h-auto">
+                        <img className="rounded-l-3xl" src={loginImage} alt="Logo" />
+                    </div>
+                    <div className="w-full md:w-8/12 p-10 flex min-h-full flex-2 flex-col justify-center bg-gradient-to-b from-amber-200 to-yellow-100 rounded-r-3xl">
+                        <h2 className="text-4xl font-gilroybold mb-7 text-center font-bold leading-0 tracking-tight">Acesso ao sistema</h2>
+                        <form className="space-y-6 mx-6" onSubmit={handleLogin}>
+                            <div>
                                 <label htmlFor="email" className="block text-base font-gilroyregular leading-6 text-gray-900">
                                     Email:
                                 </label>
@@ -73,7 +73,7 @@ const Login: React.FC = () => {
                                     placeholder='Digite seu email'
                                     value={loginState.email}
                                     onChange={handleInputChange}
-                                    className=" px-3 block w-full  h-10 rounded-2xl border-0 py-1.5 text-gray-900 shadow-md placeholder:text-gray-400 font-gilroylight focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
+                                    className=" px-3 block w-full  h-10 rounded-2xl border-0 py-1.5 text-gray-900 shadow shadow-gray-400 placeholder:text-gray-400 font-gilroylight focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
                                     />
                                 </div>
                             </div>
@@ -94,11 +94,11 @@ const Login: React.FC = () => {
                                     placeholder='Digite sua senha'
                                     value={loginState.password}
                                     onChange={handleInputChange}
-                                    className=" px-3 block w-full h-10 rounded-2xl border-0 py-1.5 text-gray-900 shadow-md placeholder:text-gray-400 font-gilroylight focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
+                                    className=" px-3 block w-full h-10 rounded-2xl border-0 py-1.5 text-gray-900 shadow shadow-gray-400 placeholder:text-gray-400 font-gilroylight focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
                                    
                                     />
                                 </div>
-                                <div className="mt-2 flex items-center justify-between">
+                                <div className="mt-3 flex items-center justify-between">
                                     <label className="flex items-center">
                                         <input
                                             type="checkbox"
@@ -115,18 +115,17 @@ const Login: React.FC = () => {
                             <div>
                                 <button
                                     type="submit" value="submit"
-                                    style={{backgroundColor: "#fdcf01", boxShadow: "#808080 0px 2px 4px"}}
-                                    className="mt-10 flex w-full h-10 justify-center items-center rounded-2xl text-lg font-gilroymedium leading-6 text-white shadow-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                    style={{backgroundColor: "#fdcf01"}}
+                                    className="mt-10 flex w-full h-10 justify-center items-center rounded-2xl text-lg font-gilroymedium leading-6 text-white shadow shadow-gray-400 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                                     Entrar
                                 </button>
                             </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
+                        </form>
+                    </div>
+                </div>
+            </div>
         </>
-      )
+    )
   };
 
 export default Login;
