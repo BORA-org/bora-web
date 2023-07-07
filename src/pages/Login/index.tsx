@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {AxiosResponse, AxiosError } from 'axios';
 import loginImage from "../../assets/img/login.png";
 import { login } from '../../services/Api/auth';
+import Button from '../../ds/components/Button';
 
 import API from "../../services/Api";
 
@@ -61,10 +62,10 @@ const Login: React.FC = () => {
                         <img className="rounded-l-3xl" src={loginImage} alt="Logo" />
                     </div>
                     <div className="w-full md:w-8/12 p-10 flex min-h-full flex-2 flex-col justify-center bg-gradient-to-b from-amber-200 to-yellow-100 rounded-r-3xl">
-                        <h2 className="text-4xl font-gilroybold mb-7 text-center font-bold leading-0 tracking-tight">Acesso ao sistema</h2>
+                        <h2 className="pb-2 text-4xl my-swal-title mb-7 text-center leading-0 tracking-tight">Acesso ao sistema</h2>
                         <form className="space-y-6 mx-6" onSubmit={handleLogin}>
                             <div>
-                                <label htmlFor="email" className="block text-base font-gilroyregular leading-6 text-gray-900">
+                                <label htmlFor="email" className="block text-base my-swal-label leading-6 text-gray-900">
                                     Email:
                                 </label>
                                 <div className="scroll-pl-6">
@@ -77,14 +78,14 @@ const Login: React.FC = () => {
                                     placeholder='Digite seu email'
                                     value={loginState.email}
                                     onChange={handleInputChange}
-                                    className=" px-3 block w-full  h-10 rounded-2xl border-0 py-1.5 text-gray-900 shadow shadow-gray-400 placeholder:text-gray-400 font-gilroylight focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
+                                    className=" px-3 block w-full h-11 rounded-2xl border-0 py-1.5 text-gray-900 shadow-3xl placeholder:text-gray-400 my-swal-placeholder focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
                                     />
                                 </div>
                             </div>
             
                             <div>
                                 <div className="flex items-center justify-between">
-                                    <label htmlFor="password" className="block text-base font-gilroyregular leading-6 text-gray-900">
+                                    <label htmlFor="password" className="block text-base my-swal-label leading-6 text-gray-900">
                                     Senha:
                                     </label>
                                 </div>
@@ -98,18 +99,18 @@ const Login: React.FC = () => {
                                     placeholder='Digite sua senha'
                                     value={loginState.password}
                                     onChange={handleInputChange}
-                                    className=" px-3 block w-full h-10 rounded-2xl border-0 py-1.5 text-gray-900 shadow shadow-gray-400 placeholder:text-gray-400 font-gilroylight focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
+                                    className=" px-3 block w-full h-11 rounded-2xl border-0 py-1.5 text-gray-900 shadow-3xl placeholder:text-gray-400 my-swal-placeholder focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
                                    
                                     />
                                 </div>
                             </div>
-                            <div className="space-y-8">
-                                <button
-                                    type="submit" value="submit"
-                                    style={{backgroundColor: "#fdcf01"}}
-                                    className="mt-10 flex w-full h-10 justify-center items-center rounded-2xl text-lg font-gilroymedium leading-6 text-white shadow shadow-gray-400 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                    Entrar
-                                </button>
+                            <div className="space-y-8 pt-10">
+                                <Button
+                                    type="submit"
+                                    value="submit"
+                                    text="Entrar"
+                                    width='w-[100%]'
+                                />
                             </div>
                         </form>
                     </div>
