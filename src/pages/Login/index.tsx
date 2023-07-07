@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import axios, {AxiosResponse, AxiosError } from 'axios';
+import {AxiosResponse, AxiosError } from 'axios';
 import loginImage from "../../assets/img/login.png";
+import { login } from '../../services/Api/auth';
+
+import API from "../../services/Api";
 
 interface LoginState {
     email: string;
@@ -27,11 +30,11 @@ const Login: React.FC = () => {
             password: loginState.password
         }
 
-        axios.post<ApiResponse>('http://3.84.165.44:8080/api/authenticate', payload)
+        API.post<ApiResponse>('/authenticate', payload)
         .then((response: AxiosResponse<ApiResponse>) => {
             // Autenticação bem-sucedida, você pode obter o token de autenticação ou outras informações relevantes da resposta
-            const token = response.data.token;
-            console.log('Autenticação bem-sucedida!', token);
+            login(response.data.token);
+            console.log('Autenticação bem-sucedida!');
         })
         .catch((error: AxiosError) => {
             // Autenticação falhou, exiba uma mensagem de erro ou tome outras medidas apropriadas
