@@ -3,6 +3,7 @@ import React from 'react';
 import Logo from '../../../assets/img/logo_white.png';
 import { ReactComponent as Logout } from '../../../assets/img/sign_out.svg';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '../../../services/Api/auth';
 
 export const Header = () => {
     const navigate = useNavigate();
@@ -26,7 +27,13 @@ export const Header = () => {
                 <p className="text-sm font-gilroy-light">john.doe@example.com</p>
               </div>
           </div>
-          <button className="flex items-center gap-2 text-base font-gilroy-regular" onClick={() => navigate('/')}>
+          <button 
+            className="flex items-center gap-2 text-base font-gilroy-regular" 
+            onClick={() => {
+              logout();
+              navigate('/');
+            }}
+          >
             <Logout className="w-6 h-6" />
             Sair
           </button>
