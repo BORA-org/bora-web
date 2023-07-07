@@ -6,6 +6,7 @@ interface ImageInputProps {
     textColor?: string;
     backgroundColor?: string;
     width?: string;
+    disabled?: boolean;
 }
 
 const ImageInput = ({
@@ -14,6 +15,8 @@ const ImageInput = ({
     textColor = 'text-gray-g5',
     backgroundColor = 'bg-yellow-y4',
     width = 'w-[394px]',
+    disabled,
+
 }: ImageInputProps) => {
     return (
         <Fragment>
@@ -42,6 +45,7 @@ const ImageInput = ({
                 accept="image/*"
                 onChange={onChange}
                 className="hidden"
+                disabled={disabled}
             />
         </Fragment>
     );

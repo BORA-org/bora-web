@@ -27,7 +27,3 @@ export const UF: { label: string; value: string }[] = [
     { value: 'SE', label: 'SE' },
     { value: 'TO', label: 'TO' },
 ];
-
-export const TYPES_TICKETS: { label: string; value: string }[] = [
-    { value: 'PAGO', label: 'PAGO' }
-];
