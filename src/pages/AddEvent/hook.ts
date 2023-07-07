@@ -20,6 +20,7 @@ type ImageValues = {
 type FormValues = {
     title: string;
     responsible: string;
+    urlImage: string;
     descripton: string;
     startDate: string;
     endDate: string;
@@ -77,10 +78,16 @@ const useForm = (initialFormValues: FormValues, initialImageValues: ImageValues)
             reader.onload = (e) => {
                 const imagemPreview = e.target?.result as string;
                 const images: Image[] = imageValues.images;
+                /** Add multiple images
                 images.push({
                     name: file.name,
                     value: imagemPreview,
                 });
+                */
+                images[0] = {
+                    name: file.name,
+                    value: imagemPreview,
+                };
                 setImageValues(prevValues => ({
                     ...prevValues,
                     images,
@@ -96,10 +103,13 @@ const useForm = (initialFormValues: FormValues, initialImageValues: ImageValues)
 
     const getLocation = (): Location => {
         return {
+            latitude: 0,
+            longitude: 0,
             number: formValues.number,
             address: formValues.address,
             city: formValues.city,
             state: formValues.uf,
+            country: 'Brasil',
         } as Location;
     };
 
@@ -115,11 +125,12 @@ const useForm = (initialFormValues: FormValues, initialImageValues: ImageValues)
         return {
             title: formValues.title,
             organization: formValues.responsible,
+            urlImage: formValues.urlImage,
             dateStart: convertDateTime(formValues.startDate, formValues.startTime),
             dateEnd: convertDateTime(formValues.endDate, formValues.endTime),
             description: formValues.descripton,
-            location,
-            ticket,
+            location: location.data,
+            ticket: ticket.data,
         } as Event;
     };
 
@@ -134,7 +145,17 @@ const useForm = (initialFormValues: FormValues, initialImageValues: ImageValues)
                     console.log(ticketResponse);
                     try {
                         const eventResponse: AxiosResponse<Event> = await API.post<Event>('events', getEvent(locationResponse, ticketResponse));
-                        console.log(eventResponse);
+                        if (eventResponse.status >= 200 && eventResponse.status < 300) {
+                            SwalMixin.fire({
+                                icon: 'success',
+                                title: 'Evento criado com Sucesso!',
+                                text: `O evento "${formValues.title}" foi criado com sucesso!`,
+                            }).then(result => {
+                                if (result.isConfirmed) {
+                                    window.location.pathname = '/event-list';
+                                }
+                            });
+                        }
                     } catch (error) {
                         SwalMixin.fire({
                             icon: 'error',

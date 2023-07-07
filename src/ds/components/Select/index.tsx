@@ -41,7 +41,7 @@ const Select = ({
 			text-base 
 			leading-none 
 			text-gray-g5
-			bg-transparent
+			bg-white-w2
 		`}
 	>
 		{data.map((item, index) => <option key={index} value={item.value}>{item.label}</option>)}

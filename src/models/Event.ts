@@ -7,7 +7,7 @@ export interface Event {
     organization?: string;
     status?: string;
     favorite?: boolean;
-    urlImage?: string[];
+    urlImage?: string;
     dateStart?: string;
     dateEnd?: string;
     description?: string;

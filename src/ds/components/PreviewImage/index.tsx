@@ -12,9 +12,10 @@ interface PreviewImageProps {
     images: Image[];
     selected: number;
     onSelected: (index: number) => void;
+    disableShowImages?: boolean;
 }
 
-const PreviewImage = ({ images, selected, onSelected }: PreviewImageProps) => {
+const PreviewImage = ({ images, selected, onSelected, disableShowImages }: PreviewImageProps) => {
     const handleSelected = (index: number) => {
         if (images.length) {
             onSelected(index);
@@ -56,15 +57,17 @@ const PreviewImage = ({ images, selected, onSelected }: PreviewImageProps) => {
     };
 
     return (
-        <div className="max-w-[310px] flex flex-col justify-center">
+        <div className="max-w-[310px] w-max-content flex flex-col justify-center">
             <div className="flex flex-row items-center justify-center mb-[25px]">
-                <button disabled={images.length < 2} onClick={handlePrevious}>
-                    <ArrowLeftIcon
-                        width={36}
-                        height={36}
-                        className="mr-[10px]"
-                    />
-                </button>
+                {!disableShowImages &&
+                    <button disabled={images.length < 2} onClick={handlePrevious}>
+                        <ArrowLeftIcon
+                            width={36}
+                            height={36}
+                            className="mr-[10px]"
+                        />
+                    </button>
+                }
                 {images[selected] ?
                     <img
                         src={images[selected].value}
@@ -73,31 +76,34 @@ const PreviewImage = ({ images, selected, onSelected }: PreviewImageProps) => {
                     /> :
                     <div className="w-[206px] h-[200px] rounded-[37px] shadow-3xl bg-gray-g2" />
                 }
-                <button disabled={images.length < 2} onClick={handleNext}>
-                    <ArrowRightIcon
-                        width={36}
-                        height={36}
-                        className="ml-[10px]"
-                    />
-                </button>
-
+                {!disableShowImages &&
+                    <button disabled={images.length < 2} onClick={handleNext}>
+                        <ArrowRightIcon
+                            width={36}
+                            height={36}
+                            className="ml-[10px]"
+                        />
+                    </button>
+                }
             </div>
-            <div className="flex flex-row items-center justify-center">
-                {filterImages().map((image, index) =>
-                    <div key={index}>
-                        {image.value ?
-                            <img
-                                src={image.value}
-                                alt=""
-                                onClick={() => handleSelected(index)}
-                                className="w-[70px] h-[70px] m-[15px] rounded-[10px] shadow-3xl"
-                            />
-                            :
-                            <div className="w-[70px] h-[70px] m-[15px] rounded-[10px] shadow-3xl bg-gray-g2" />
-                        }
-                    </div>
-                )}
-            </div>
+            {!disableShowImages &&
+                <div className="flex flex-row items-center justify-center">
+                    {filterImages().map((image, index) =>
+                        <div key={index}>
+                            {image.value ?
+                                <img
+                                    src={image.value}
+                                    alt=""
+                                    onClick={() => handleSelected(index)}
+                                    className="w-[70px] h-[70px] m-[15px] rounded-[10px] shadow-3xl"
+                                />
+                                :
+                                <div className="w-[70px] h-[70px] m-[15px] rounded-[10px] shadow-3xl bg-gray-g2" />
+                            }
+                        </div>
+                    )}
+                </div>
+            }
         </div>
     );
 };
