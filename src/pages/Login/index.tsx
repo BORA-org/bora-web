@@ -57,7 +57,7 @@ const Login: React.FC = () => {
         <>
             <div className="flex items-center justify-center h-screen bg-gray-100">
                 <div className="flex flex-col-reverse md:flex-row rounded-3xl shadow shadow-gray-400 my-20 sm:max-w-4xl">
-                    <div className="w-full md:w-11/12 bg-blue-500 rounded-l-3xl h-64 md:h-auto">
+                    <div className="w-full md:w-11/12 rounded-l-3xl h-64 md:h-auto">
                         <img className="rounded-l-3xl" src={loginImage} alt="Logo" />
                     </div>
                     <div className="w-full md:w-8/12 p-10 flex min-h-full flex-2 flex-col justify-center bg-gradient-to-b from-amber-200 to-yellow-100 rounded-r-3xl">
@@ -102,21 +102,8 @@ const Login: React.FC = () => {
                                    
                                     />
                                 </div>
-                                <div className="mt-3 flex items-center justify-between">
-                                    <label className="flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            name="rememberPassword"
-                                            checked={loginState.rememberPassword}
-                                            onChange={handleInputChange}
-                                            className="mr-2"
-                                        />
-                                        <span className="text-sm font-gilroyregular">Lembrar de mim</span>
-                                    </label>
-                                </div>
                             </div>
-            
-                            <div>
+                            <div className="space-y-8">
                                 <button
                                     type="submit" value="submit"
                                     style={{backgroundColor: "#fdcf01"}}
