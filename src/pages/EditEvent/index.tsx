@@ -16,6 +16,8 @@ import Money from "../../ds/components/Money";
 import { UF, TYPES_TICKETS } from "../../utils/constants";
 
 import useForm from "./hook";
+import RemoveEventModal from "../../ds/components/RemoveEventModal";
+import CreateEventSuccessModal from "../../ds/components/CreateEventSuccessModal";
 
 const AddEvent = () => {
   const {
@@ -60,7 +62,18 @@ const AddEvent = () => {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center">
       {/* Seção de Anexar Imagens */}
-
+      <RemoveEventModal
+        eventName={"Absolutto Bar e Gastronomia"}
+        show={true}
+        onClose={() => {}}
+      ></RemoveEventModal>
+      <CreateEventSuccessModal
+        eventName={"Absolutto Bar e Gastronomia"}
+        show={false}
+        onClose={function (): void {
+          //
+        }}
+      ></CreateEventSuccessModal>
       <Section styles="flex-row">
         <PreviewImage
           images={imageValues.images || []}
