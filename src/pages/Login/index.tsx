@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {AxiosResponse, AxiosError } from 'axios';
 import loginImage from "../../assets/img/login.png";
 import { login } from '../../services/Api/auth';
@@ -12,7 +13,7 @@ interface LoginState {
 }
 
 interface ApiResponse {
-    token: string;
+    id_token: string;
 }
   
 const Login: React.FC = () => {
@@ -21,6 +22,7 @@ const Login: React.FC = () => {
       password: '',
       rememberPassword: false,
     });
+    const navigate = useNavigate();
   
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
@@ -32,12 +34,11 @@ const Login: React.FC = () => {
 
         API.post<ApiResponse>('/authenticate', payload)
         .then((response: AxiosResponse<ApiResponse>) => {
-            // Autenticação bem-sucedida, você pode obter o token de autenticação ou outras informações relevantes da resposta
-            login(response.data.token);
+            login(response.data.id_token);
             console.log('Autenticação bem-sucedida!');
+            navigate('/event-list')
         })
         .catch((error: AxiosError) => {
-            // Autenticação falhou, exiba uma mensagem de erro ou tome outras medidas apropriadas
             console.log('Autenticação falhou!', error);
         });
     };
