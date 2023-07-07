@@ -49,51 +49,42 @@ const Login: React.FC = () => {
       }));
     };
   
-    const handleForgotPassword = () => {
-      // Lógica para lidar com a recuperação de senha
-    };
-  
     return (
         <>
-        <div className="grid grid-cols-2 divide-x rounded-full" style={{margin: "300px"}}>
-            <div className="flex min-h-full flex-2 flex-col justify-center col-span-1">
-                <img src={loginImage} alt="Logo" />
-            </div>
-            <div className="col-span-1">
-                <div className="flex min-h-full flex-2 flex-col justify-center " style={{backgroundColor: "#ffeda0"}}>
-                    <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                        <h2 className="mt-10 text-center font-bold leading-0 tracking-tight text-gray-900"  style={{fontSize: "30px"}}>
-                            Acesso ao sistema
-                        </h2>
-                    </div>
-                    <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                        <form className="space-y-6" onSubmit={handleLogin}>
-                            <div>
-                                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+        <div className="flex items-center justify-center h-screen bg-gray-100">
+      <div className="flex bg-white rounded-3xl shadow-md my-20 sm:max-w-4xl">
+        <div className="w-11/12 bg-blue-500 rounded-l-3xl h-64 md:h-auto">
+            <img src={loginImage} alt="Logo" />
+        </div>
+        <div className="w-8/12 p-10 flex min-h-full flex-2 flex-col justify-center bg-gradient-to-b from-amber-200 to-yellow-100 rounded-r-3xl">
+          <h2 className="text-4xl font-gilroybold mb-7 text-center font-bold leading-0 tracking-tight">Acesso ao sistema</h2>
+          <form className="space-y-6 mx-6" onSubmit={handleLogin}>
+          <div>
+                                <label htmlFor="email" className="block text-base font-gilroyregular leading-6 text-gray-900">
                                     Email:
                                 </label>
-                                <div className="mt-2 scroll-pl-6">
+                                <div className="scroll-pl-6">
                                     <input
                                     id="email"
                                     name="email"
                                     type="text"
                                     autoComplete="email"
                                     required
-                                    placeholder='Digite seu CPF ou CNPJ'
+                                    placeholder='Digite seu email'
                                     value={loginState.email}
                                     onChange={handleInputChange}
-                                    className=" px-3 rounded-lg block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
+                                    className=" px-3 block w-full  h-10 rounded-2xl border-0 py-1.5 text-gray-900 shadow-md placeholder:text-gray-400 font-gilroylight focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
                                     />
                                 </div>
                             </div>
             
                             <div>
                                 <div className="flex items-center justify-between">
-                                    <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                                    <label htmlFor="password" className="block text-base font-gilroyregular leading-6 text-gray-900">
                                     Senha:
                                     </label>
                                 </div>
-                                <div className="mt-2">
+                                <div className="">
                                     <input
                                     id="password"
                                     name="password"
@@ -103,7 +94,7 @@ const Login: React.FC = () => {
                                     placeholder='Digite sua senha'
                                     value={loginState.password}
                                     onChange={handleInputChange}
-                                    className=" px-3 rounded-lg block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
+                                    className=" px-3 block w-full h-10 rounded-2xl border-0 py-1.5 text-gray-900 shadow-md placeholder:text-gray-400 font-gilroylight focus:ring-2 focus:ring-inset focus:ring-amber-300 sm:text-sm sm:leading-6"
                                    
                                     />
                                 </div>
@@ -116,13 +107,8 @@ const Login: React.FC = () => {
                                             onChange={handleInputChange}
                                             className="mr-2"
                                         />
-                                        <span className="text-sm">Lembrar de mim</span>
+                                        <span className="text-sm font-gilroyregular">Lembrar de mim</span>
                                     </label>
-                                    <div className="text-sm">
-                                        <a href="#" className="font-semibold hover:text-indigo-500">
-                                            Esqueceu a senha?
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
             
@@ -130,24 +116,15 @@ const Login: React.FC = () => {
                                 <button
                                     type="submit" value="submit"
                                     style={{backgroundColor: "#fdcf01", boxShadow: "#808080 0px 2px 4px"}}
-                                    className="mt-10 flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                    className="mt-10 flex w-full h-10 justify-center items-center rounded-2xl text-lg font-gilroymedium leading-6 text-white shadow-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                                     Entrar
                                 </button>
                             </div>
-
-                            <div>
-                                <button
-                                    type="submit"
-                                    style={{backgroundColor: "#ffeda0", boxShadow: "#808080 0px 2px 4px"}}
-                                    className="flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                    Não tenho conta
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+          </form>
         </div>
+      </div>
+    </div>
+
         </>
       )
   };
