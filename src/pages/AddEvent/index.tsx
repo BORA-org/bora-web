@@ -11,17 +11,18 @@ import IOContext from '../../ds/components/IOContext';
 // import PreviewImage from '../../ds/components/PreviewImage';
 // import ImageInput from '../../ds/components/ImageInput';
 import Section from '../../ds/components/Title';
-import Money from '../../ds/components/Money';
 
 import { UF } from '../../utils/constants';
 
 import useForm from './hook';
 import { Header } from '../../ds/components/Header';
+import Loading from '../../ds/components/Loading';
 
 const AddEvent = () => {
     const {
         formValues,
         // imageValues,
+        isSubmit,
         handleChange,
         // handleImageSelection,
         // handleImageDeletion,
@@ -99,9 +100,9 @@ const AddEvent = () => {
 
                     {/* Seção de Informações Gerais do Evento */}
 
-                    <Section 
+                    <Section
                         title="Evento"
-                        subtitle="Preencha informações gerais sobre o evento" 
+                        subtitle="Preencha informações gerais sobre o evento"
                         styles="flex-col"
                     >
                         <div className="flex flex-row mb-[40px]">
@@ -291,9 +292,11 @@ const AddEvent = () => {
                                 />
                             </IOContext>
                             <IOContext label="Preço" marginLeft="ml-[25px]" required>
-                                <Money
+                                <Input
+                                    type="number"
                                     name="priceTicket"
                                     value={formValues.priceTicket}
+                                    placeholder="R$ 10,0"
                                     onChange={handleChange}
                                     required
                                 />
@@ -348,11 +351,15 @@ const AddEvent = () => {
                         </div>
                     </Section>
 
-                    <Button
-                        type="submit"
-                        text="Adicionar evento"
-                        width='w-[250px]'
-                    />
+                    {isSubmit ? 
+                        <Loading /> :
+                        <Button
+                            type="submit"
+                            text="Adicionar evento"
+                            width='w-[250px]'
+                            disabled={isSubmit}
+                        />
+                    }
 
                 </form>
             </main>
