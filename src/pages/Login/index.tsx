@@ -90,7 +90,7 @@ const Login = () => {
                                 <input
                                     id="email"
                                     name="email"
-                                    type="email"
+                                    type="text"
                                     autoComplete="email"
                                     required
                                     placeholder='Digite seu email'

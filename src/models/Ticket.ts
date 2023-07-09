@@ -3,4 +3,7 @@ export interface Ticket {
     price?: number;
     name?: string;
     type?: string;
+    description?: string;
+    dateStart?: string;
+    dateEnd?: string;
 }
