@@ -24,7 +24,7 @@ module.exports = {
       tight: '1.25',
       normal: '1.5',
       loose: '2',
-    }, 
+    },
     extend: {
       colors: {
         blue: {
@@ -43,6 +43,9 @@ module.exports = {
           g3: '#CBD5E1',
           g4: '#808080',
           g5: '#282828',
+          g6: '#C1C1C1',
+          g7: '#888888',
+          g8: '#88888833',
         },
         white: {
           w1: '#F3F3F1',
@@ -56,6 +59,9 @@ module.exports = {
           r1: '#CF2939',
         },
       },
+      boxShadow: {
+        '3xl': '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+      }
     },
   },
   plugins: [],
