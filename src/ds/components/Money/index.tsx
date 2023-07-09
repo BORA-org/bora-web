@@ -17,16 +17,21 @@ const Money = ({
     width = 'w-[125px]',
     height = 'h-[55px]',
     required = false,
-}: MoneyProps) => {    
+}: MoneyProps) => {
+    const maskOptions = {
+        mask: 'R$ 9999999999,99',
+        regex: /R\$\s?\d+(,\d{1,2})?/,
+        maskChar: null,
+    };
+
     return (
         <InputMask
+            {...maskOptions}
             name={name}
             value={value}
             required={required}
-            mask=""
             onChange={onChange}
             placeholder="R$ 0,00"
-            maskChar={null}
             className={`
                 ${width} 
                 ${height} 

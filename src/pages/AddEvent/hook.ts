@@ -9,6 +9,7 @@ import { Location } from "../../models/Location";
 import { Ticket } from "../../models/Ticket";
 
 import API from "../../services/Api";
+import Nominatim from "../../services/Nominatim";
 
 import { convertDateTime, convertToNumber } from "../../utils/converters";
 
@@ -46,6 +47,7 @@ type FormValues = {
 const useForm = (initialFormValues: FormValues, initialImageValues: ImageValues) => {
     const [formValues, setFormValues] = useState<FormValues>(initialFormValues);
     const [imageValues, setImageValues] = useState<ImageValues>(initialImageValues);
+    const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -101,16 +103,31 @@ const useForm = (initialFormValues: FormValues, initialImageValues: ImageValues)
         return true;
     };
 
-    const getLocation = (): Location => {
-        return {
+    const getLocation = async (): Promise<Location> => {
+        let location: Location = {
             latitude: 0,
             longitude: 0,
-            number: formValues.number,
+            placeName: formValues.localName,
+            cep: formValues.cep,
             address: formValues.address,
+            number: formValues.number,
+            complement: formValues.complement,
             city: formValues.city,
             state: formValues.uf,
             country: 'Brasil',
-        } as Location;
+        };
+        try {
+            const response = await Nominatim.get(`search?format=json&q=${location.address},nº${location.number},${location.city},${location.state},${location.country}`);
+            if (response.data.length > 0) {
+                const { lat, lon } = response.data[0];
+                location.latitude = lat;
+                location.longitude = lon;
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            return location;
+        }
     };
 
     const getTicket = (): Ticket => {
@@ -118,6 +135,9 @@ const useForm = (initialFormValues: FormValues, initialImageValues: ImageValues)
             price: convertToNumber(formValues.priceTicket),
             name: formValues.nameTicket,
             type: formValues.typeTicket,
+            description: formValues.descriptonTicket,
+            dateStart: convertDateTime(formValues.startDateTicket, formValues.startTimeTicket),
+            dateEnd: convertDateTime(formValues.endDateTicket, formValues.endTimeTicket),
         } as Ticket;
     };
 
@@ -136,9 +156,10 @@ const useForm = (initialFormValues: FormValues, initialImageValues: ImageValues)
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setIsSubmit(true);
         if (handleValidate()) {
             try {
-                const locationResponse: AxiosResponse<Location> = await API.post('locations', getLocation());
+                const locationResponse: AxiosResponse<Location> = await API.post('locations', await getLocation());
                 console.log(locationResponse);
                 try {
                     const ticketResponse: AxiosResponse<Ticket> = await API.post<Ticket>('tickets', getTicket());
@@ -182,11 +203,13 @@ const useForm = (initialFormValues: FormValues, initialImageValues: ImageValues)
                 console.error('Error to register ticket:', error);
             }
         }
+        setIsSubmit(false);
     };
 
     return {
         formValues,
         imageValues,
+        isSubmit,
         handleChange,
         handleImageSelection,
         handleImageDeletion,
