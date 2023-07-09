@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {AxiosResponse, AxiosError } from 'axios';
 import loginImage from "../../assets/img/login.png";
 import { login } from '../../services/Api/auth';
 import Button from '../../ds/components/Button';
 
 import API from "../../services/Api";
 import SwalMixin from '../../ds/components/SwalMixin';
+import { User } from '../../models/User';
+
+import { userState } from '../../store/user';
 
 interface LoginState {
     email: string;
@@ -18,35 +20,47 @@ interface ApiResponse {
     id_token: string;
 }
   
-const Login: React.FC = () => {
+const Login = () => {
     const [loginState, setLoginState] = useState<LoginState>({
       email: '',
       password: '',
       rememberPassword: false,
     });
+    const [isRequestLoading, setIsRequestLoading] = useState(false);
 
     const navigate = useNavigate();
   
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
 
         const payload = {
             email: loginState.email,
             password: loginState.password
-        }
+        };
 
-        API.post<ApiResponse>('/authenticate', payload)
-        .then((response: AxiosResponse<ApiResponse>) => {
-            login(response.data.id_token);
-            navigate('/event-list')
-        })
-        .catch((error: AxiosError) => {
+        try {
+            setIsRequestLoading(true);
+
+            const loginResponse = await API.post<ApiResponse>('/authenticate', payload);
+            login(loginResponse.data.id_token);
+            
+            const userResponse = await API.get<User>(`/admin/users/${payload.email}`);
+            
+            userState.setUser({
+                name: userResponse.data.name ?? '',
+                email: userResponse.data.email
+            });
+            userState.setToken(loginResponse.data.id_token);
+            navigate('/event-list');
+        } catch(err) {
             SwalMixin.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: 'Erro au autenticar usuário, por favor, tente novamente!',
             });
-        });
+        } finally {
+            setIsRequestLoading(false);
+        }
     };
   
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,8 +126,9 @@ const Login: React.FC = () => {
                             <Button
                                 type="submit"
                                 value="submit"
-                                text="Entrar"
+                                text={isRequestLoading ? 'Entrando...' : 'Entrar'}
                                 width='w-[100%]'
+                                disabled={isRequestLoading}
                             />
                         </div>
                     </form>

@@ -5,6 +5,7 @@ export interface Event {
     id?: string;
     title?: string;
     organization?: string;
+    isPublic?: boolean | null;
     status?: string;
     favorite?: boolean;
     urlImage?: string;

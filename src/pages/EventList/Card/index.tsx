@@ -70,7 +70,7 @@ export const Card = ({ event }: CardProps) => {
                         <div className="flex flex-col">
                             <div className="flex items-center mb-3">
                             <label className="switch">
-                                <input type="checkbox" />
+                                <input type="checkbox" checked={!!event.isPublic} />
                                 <span className="slider round"></span>
                             </label>
                             </div>
