@@ -1,11 +1,10 @@
-import { persist } from "mobx-persist";
 import { action, observable } from "mobx";
 import { User } from "../models/User";
 
 class UserStore {
-    @persist @observable name: string = '';
-    @persist @observable email: string = '';
-    @persist @observable token: string = '';
+    @observable name: string = '';
+    @observable email: string = '';
+    @observable token: string = '';
 
     @action
     setUser = (user: User) => {
