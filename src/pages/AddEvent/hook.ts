@@ -144,8 +144,7 @@ const useForm = (initialFormValues: FormValues, initialImageValues: ImageValues)
     const getEvent = (location: AxiosResponse<Location>, ticket: AxiosResponse<Ticket>): Event => {
         return {
             title: formValues.title,
-            organization: formValues.responsible,
-            urlImage: formValues.urlImage,
+            organization: formValues.responsible.replaceAll('.', '').replaceAll('/', ''),            urlImage: formValues.urlImage,
             dateStart: convertDateTime(formValues.startDate, formValues.startTime),
             dateEnd: convertDateTime(formValues.endDate, formValues.endTime),
             description: formValues.descripton,
