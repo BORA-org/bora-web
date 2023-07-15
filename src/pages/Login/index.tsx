@@ -6,7 +6,6 @@ import Button from '../../ds/components/Button';
 
 import API from "../../services/Api";
 import SwalMixin from '../../ds/components/SwalMixin';
-import { User } from '../../models/User';
 
 import { userState } from '../../store/user';
 
@@ -43,12 +42,10 @@ const Login = () => {
 
             const loginResponse = await API.post<ApiResponse>('/authenticate', payload);
             login(loginResponse.data.id_token);
-            
-            const userResponse = await API.get<User>(`/admin/users/${payload.email}`);
-            
+                        
             userState.setUser({
-                name: userResponse.data.name ?? '',
-                email: userResponse.data.email
+                name: '',
+                email: payload.email
             });
             userState.setToken(loginResponse.data.id_token);
             navigate('/event-list');

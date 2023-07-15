@@ -8,16 +8,15 @@ import { ReactComponent as RemoveIcon } from '../../../assets/img/trash.svg';
 
 import './styles.css';
 import { Event } from "../../../models/Event";
-import format from "date-fns/format";
-import { ptBR } from "date-fns/locale";
 import API from "../../../services/Api";
 import SwalMixin from "../../../ds/components/SwalMixin";
 
 interface CardProps {
     event: Event;
+    reloadTrigger: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Card = ({ event }: CardProps) => {
+export const Card = ({ event, reloadTrigger }: CardProps) => {
     const [isEventPublic, setIsEventPublic] = useState(!!event.isPublic);
 
     const isImageURLValid = () => {
@@ -32,12 +31,8 @@ export const Card = ({ event }: CardProps) => {
     };
 
     const getFormattedDate = () => {
-        const formattedDate = format(
-            new Date(event.dateStart!), 
-            "dd/MM/yyyy - HH:mm", 
-            { locale: ptBR }
-        );
-    
+        const formattedDate = event.dateStart!.replace(' ', ' - ');
+
         return formattedDate;
     };
 
@@ -45,21 +40,21 @@ export const Card = ({ event }: CardProps) => {
         setIsEventPublic(isPublic);
 
         try {
-            const response = await API.patch('events', {
+            await API.patch(`events/${event.id}`, {
+                id: event.id,
                 isPublic,
             });
 
-            console.log(response);
-            // setIsEventPublic(true);
+            reloadTrigger((prevState) => !prevState);
         } catch(err) {
             SwalMixin.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: 'Ocorreu um problema ao publicar evento, tente novamente.',
             });
-            // setIsEventPublic(true);
+    
+            setIsEventPublic(false);
         }
-
     };
 
     return (
@@ -83,7 +78,7 @@ export const Card = ({ event }: CardProps) => {
                             </p>
                             <p className="flex items-center gap-1 font-gilroy-medium text-gray-g5 text-sm leading-4">
                                 <LocatizationIcon />
-                                {event.location!.address!},
+                                {event.location!.address!}{', '}
                                 {event.location!.number} -
                                 {event.location!.city}/{event.location!.state}
                             </p>
