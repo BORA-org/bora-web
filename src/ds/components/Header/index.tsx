@@ -4,9 +4,29 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../services/Api/auth';
 import { observer } from 'mobx-react';
 import { userState } from '../../../store/user';
+import { useEffect } from 'react';
+import { User } from '../../../models/User';
+import API from '../../../services/Api';
 
 export const Header = observer(() => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getUserInfos = async () => {
+      try {
+        const userResponse = await API.get<User>(`/admin/users/${userState.email}`);
+
+        userState.setUser({
+          name: userResponse.data.name,
+          email: userResponse.data.email
+        });
+      } catch(err) {
+
+      }
+    };
+
+    getUserInfos();
+  }, []);
 
   return (
     <header className="bg-blue-b1 text-white-w1 pt-3 pb-3 pl-20 pr-20 flex justify-between items-center">

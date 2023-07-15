@@ -124,7 +124,7 @@ const useForm = (initialFormValues: FormValues, initialImageValues: ImageValues)
                 location.longitude = lon;
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         } finally {
             return location;
         }
@@ -144,8 +144,7 @@ const useForm = (initialFormValues: FormValues, initialImageValues: ImageValues)
     const getEvent = (location: AxiosResponse<Location>, ticket: AxiosResponse<Ticket>): Event => {
         return {
             title: formValues.title,
-            organization: formValues.responsible,
-            urlImage: formValues.urlImage,
+            organization: formValues.responsible.replaceAll('.', '').replaceAll('/', ''),            urlImage: formValues.urlImage,
             dateStart: convertDateTime(formValues.startDate, formValues.startTime),
             dateEnd: convertDateTime(formValues.endDate, formValues.endTime),
             description: formValues.descripton,
@@ -160,10 +159,8 @@ const useForm = (initialFormValues: FormValues, initialImageValues: ImageValues)
         if (handleValidate()) {
             try {
                 const locationResponse: AxiosResponse<Location> = await API.post('locations', await getLocation());
-                console.log(locationResponse);
                 try {
                     const ticketResponse: AxiosResponse<Ticket> = await API.post<Ticket>('tickets', getTicket());
-                    console.log(ticketResponse);
                     try {
                         const eventResponse: AxiosResponse<Event> = await API.post<Event>('events', getEvent(locationResponse, ticketResponse));
                         if (eventResponse.status >= 200 && eventResponse.status < 300) {

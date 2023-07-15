@@ -11,12 +11,13 @@ import IOContext from '../../ds/components/IOContext';
 // import PreviewImage from '../../ds/components/PreviewImage';
 // import ImageInput from '../../ds/components/ImageInput';
 import Section from '../../ds/components/Title';
+import Loading from '../../ds/components/Loading';
+import Responsible from '../../ds/components/Responsible';
+import { Header } from '../../ds/components/Header';
 
 import { UF } from '../../utils/constants';
 
 import useForm from './hook';
-import { Header } from '../../ds/components/Header';
-import Loading from '../../ds/components/Loading';
 
 const AddEvent = () => {
     const {
@@ -116,7 +117,7 @@ const AddEvent = () => {
                                 />
                             </IOContext>
                             <IOContext label="CPF ou CNPJ" marginLeft="ml-[37px]" required>
-                                <Input
+                                <Responsible
                                     name="responsible"
                                     value={formValues.responsible}
                                     onChange={handleChange}
