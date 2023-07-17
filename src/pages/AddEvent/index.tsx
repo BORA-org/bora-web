@@ -359,7 +359,7 @@ const AddEvent = ({ eventType }: { eventType: string }) => {
           ) : (
             <Button
               type="submit"
-              text="Adicionar evento"
+              text={eventType === "edit" ? "Editar evento" : "Adicionar evento"}
               width="w-[250px]"
               disabled={isSubmit}
             />
