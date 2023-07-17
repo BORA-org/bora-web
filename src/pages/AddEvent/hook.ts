@@ -53,33 +53,48 @@ const useForm = (
   const [imageValues, setImageValues] =
     useState<ImageValues>(initialImageValues);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
+  const [eventData, setEventData] = useState({} as Event);
 
   useEffect(() => {
-    if (eventType === "edit") {
+    const fetchEventData = async () => {
+      if (eventType !== "edit") {
+        return;
+      }
       const path = window.location.pathname;
       const eventId = path.split("/")[2];
-      API.get("/events/" + eventId).then((response) => {
-        //console.log(response.data);
-        setFormValues((prevValues) => ({
-          ...prevValues,
-          title: response.data.title,
-          responsible: response.data.organization,
-          urlImage: response.data.urlImage,
-          descripton: response.data.description,
-          startDate: response.data.dateStart.split(" ")[0],
-          startTime: response.data.dateStart.split(" ")[1],
-          endTime: response.data.dateEnd.split(" ")[1],
-          endDate: response.data.dateEnd.split(" ")[0],
-          address: response.data.location.address,
-          number: response.data.location.number,
-          city: response.data.location.city,
-          nameTicket: response.data.ticket.name,
-          typeTicket: response.data.ticket.type,
-          priceTicket: response.data.ticket.price.toString(),
-          location: response.data.location,
-        }));
-      });
-    }
+      const response = await API.get("/events/" + eventId);
+      const event = response.data;
+      console.log(event);
+      setFormValues((prevValues) => ({
+        ...prevValues,
+
+        title: event.title,
+        responsible: event.organization,
+        urlImage: event.urlImage,
+        descripton: event.description,
+        startDate: event.dateStart.split(" ")[0],
+        endDate: event.dateEnd.split(" ")[0],
+        startTime: event.dateStart.split(" ")[1],
+        endTime: event.dateEnd.split(" ")[1],
+        localName: event.location.placeName,
+        address: event.location.address,
+        number: event.location.number,
+        complement: event.location.complement,
+        city: event.location.city,
+        uf: "RN",
+        nameTicket: event.ticket.name,
+        typeTicket: event.ticket.type,
+        priceTicket: event.ticket.price.toString(),
+        descriptonTicket: "",
+        startDateTicket: "",
+        startTimeTicket: "",
+        endDateTicket: "",
+        endTimeTicket: "",
+      }));
+      setEventData(event);
+    };
+
+    fetchEventData();
   }, [window.location.pathname]);
 
   const handleChange = (
@@ -138,7 +153,7 @@ const useForm = (
     return true;
   };
 
-  const getLocation = async (): Promise<Location> => {
+  const getLocation = async (id?: string): Promise<Location> => {
     let location: Location = {
       latitude: 0,
       longitude: 0,
@@ -186,8 +201,24 @@ const useForm = (
 
   const getEvent = (
     location: AxiosResponse<Location>,
-    ticket: AxiosResponse<Ticket>
+    ticket: AxiosResponse<Ticket>,
+    eventType?: string
   ): Event => {
+    if (eventType === "edit") {
+      return {
+        id: eventData?.id,
+        title: formValues.title,
+        organization: formValues.responsible
+          .replaceAll(".", "")
+          .replaceAll("/", ""),
+        urlImage: formValues.urlImage,
+        dateStart: convertDateTime(formValues.startDate, formValues.startTime),
+        dateEnd: convertDateTime(formValues.endDate, formValues.endTime),
+        description: formValues.descripton,
+        location: location.data,
+        ticket: ticket.data,
+      };
+    }
     return {
       title: formValues.title,
       organization: formValues.responsible
@@ -207,18 +238,82 @@ const useForm = (
     setIsSubmit(true);
     if (handleValidate()) {
       if (eventType === "edit") {
+        // if (eventData) {
+        //   console.log(eventData?.location?.id);
+        //   console.log(eventData?.ticket?.id);
+        //   const ticketResponse = await API.get(
+        //     `/tickets/${eventData?.ticket?.id}`
+        //   );
+        //   const locationResponse = await API.get(
+        //     `/locations/${eventData?.location?.id}`
+        //   );
+        //   console.log();
+        //   API.put(
+        //     `/events/${eventData.id}`,
+        //     getEvent(locationResponse, ticketResponse, "edit")
+        //   );
+        // }
+
+        //API.put(`/events/${id}`, getEvent(locationResponse, ticketResponse));
         try {
-          const locationResponse: AxiosResponse<Location> = await API.put(
+          const locationResponse: AxiosResponse<Location> = await API.get(
+            `/locations/${eventData?.location?.id}`
+          );
+          try {
+            const ticketResponse: AxiosResponse<Ticket> = await API.get(
+              `/tickets/${eventData?.ticket?.id}`
+            );
+            try {
+              const eventResponse: AxiosResponse<Event> = await API.put<Event>(
+                `/events/${eventData.id}`,
+                getEvent(locationResponse, ticketResponse, "edit")
+              );
+              if (eventResponse.status >= 200 && eventResponse.status < 300) {
+                SwalMixin.fire({
+                  icon: "success",
+                  title: "Evento editado com Sucesso!",
+                  text: `O evento "${formValues.title}" foi editado com sucesso!`,
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.pathname = "/event-list";
+                  }
+                });
+              }
+            } catch (error) {
+              SwalMixin.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Ocorreu um problema ao editar o evento",
+              });
+              console.error("Error to edit event:", error);
+            }
+          } catch (error) {
+            SwalMixin.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Ocorreu um problema ao editar o ticket",
+            });
+            console.error("Error to edit location:", error);
+          }
+        } catch (error) {
+          SwalMixin.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Ocorreu um problema ao registrar o endereço",
+          });
+          console.error("Error to register ticket:", error);
+        }
+      } else {
+        try {
+          const locationResponse: AxiosResponse<Location> = await API.post(
             "locations",
             await getLocation()
           );
           try {
-            const ticketResponse: AxiosResponse<Ticket> = await API.put<Ticket>(
-              "tickets",
-              getTicket()
-            );
+            const ticketResponse: AxiosResponse<Ticket> =
+              await API.post<Ticket>("tickets", getTicket());
             try {
-              const eventResponse: AxiosResponse<Event> = await API.put<Event>(
+              const eventResponse: AxiosResponse<Event> = await API.post<Event>(
                 "events",
                 getEvent(locationResponse, ticketResponse)
               );
@@ -237,88 +332,26 @@ const useForm = (
               SwalMixin.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Ocorreu um problema ao atualizar o evento",
+                text: "Ocorreu um problema ao registrar o evento",
               });
-              console.error("Error to edit event:", error);
+              console.error("Error to register event:", error);
             }
           } catch (error) {
             SwalMixin.fire({
               icon: "error",
               title: "Oops...",
-              text: "Ocorreu um problema ao atualizar o ticket",
+              text: "Ocorreu um problema ao registrar o ticket",
             });
-            console.error("Error to edit location:", error);
+            console.error("Error to register location:", error);
           }
         } catch (error) {
           SwalMixin.fire({
             icon: "error",
             title: "Oops...",
-            text: "Ocorreu um problema ao atualizar o endereço",
+            text: "Ocorreu um problema ao registrar o endereço",
           });
-          console.error("Error to edit ticket:", error);
+          console.error("Error to register ticket:", error);
         }
-        SwalMixin.fire({
-          icon: "success",
-          title: "Evento atualizado com Sucesso!",
-          text: `O evento "${formValues.title}" foi atualizado com sucesso!`,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.pathname = "/event-list";
-          }
-        });
-        return;
-
-        // API.put(`/events/${id}`, getEvent(locationResponse, ticketResponse));
-      }
-      try {
-        const locationResponse: AxiosResponse<Location> = await API.post(
-          "locations",
-          await getLocation()
-        );
-        try {
-          const ticketResponse: AxiosResponse<Ticket> = await API.post<Ticket>(
-            "tickets",
-            getTicket()
-          );
-          try {
-            const eventResponse: AxiosResponse<Event> = await API.post<Event>(
-              "events",
-              getEvent(locationResponse, ticketResponse)
-            );
-            if (eventResponse.status >= 200 && eventResponse.status < 300) {
-              SwalMixin.fire({
-                icon: "success",
-                title: "Evento criado com Sucesso!",
-                text: `O evento "${formValues.title}" foi criado com sucesso!`,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  window.location.pathname = "/event-list";
-                }
-              });
-            }
-          } catch (error) {
-            SwalMixin.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Ocorreu um problema ao registrar o evento",
-            });
-            console.error("Error to register event:", error);
-          }
-        } catch (error) {
-          SwalMixin.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Ocorreu um problema ao registrar o ticket",
-          });
-          console.error("Error to register location:", error);
-        }
-      } catch (error) {
-        SwalMixin.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Ocorreu um problema ao registrar o endereço",
-        });
-        console.error("Error to register ticket:", error);
       }
     }
     setIsSubmit(false);
