@@ -1,11 +1,11 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import Login from './pages/Login';
-import { EventList } from './pages/EventList';
-import AddEvent from './pages/AddEvent';
-import EditEvent from './pages/EditEvent';
+import Login from "./pages/Login";
+import { EventList } from "./pages/EventList";
+import AddEvent from "./pages/AddEvent";
+import EditEvent from "./pages/EditEvent";
 
-import ProtectRoute from './services/ProtectRoute';
+import ProtectRoute from "./services/ProtectRoute";
 
 const router = createBrowserRouter([
   {
@@ -14,31 +14,32 @@ const router = createBrowserRouter([
   },
   {
     path: "/event-list",
-    element:
+    element: (
       <ProtectRoute>
         <EventList />
-      </ProtectRoute>,
+      </ProtectRoute>
+    ),
   },
   {
     path: "/add-event",
-    element:
+    element: (
       <ProtectRoute>
-        <AddEvent />
-      </ProtectRoute>,
+        <AddEvent eventType="add" />
+      </ProtectRoute>
+    ),
   },
   {
-    path: "/edit-event",
-    element:
+    path: "/edit-event/:id",
+    element: (
       <ProtectRoute>
-        <EditEvent />
-      </ProtectRoute>,
+        <AddEvent eventType="edit" />
+      </ProtectRoute>
+    ),
   },
 ]);
 
 const App = () => {
-  return (
-    <RouterProvider router={router} />
-  );
-}
+  return <RouterProvider router={router} />;
+};
 
 export default App;
