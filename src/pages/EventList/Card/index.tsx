@@ -15,7 +15,7 @@ import RemoveEventModal from "../../../ds/components/RemoveEventModal";
 interface CardProps {
   event: Event;
   reloadTrigger: React.Dispatch<React.SetStateAction<boolean>>;
-  toggleModal: (eventTitle?: string) => void;
+  toggleModal: (eventTitle?: string, eventId?: string) => void;
 }
 
 export const Card = ({ event, reloadTrigger, toggleModal }: CardProps) => {
@@ -114,7 +114,7 @@ export const Card = ({ event, reloadTrigger, toggleModal }: CardProps) => {
                   onClick={() => {}}
                 >
                   <RemoveIcon
-                    onClick={() => toggleModal(event.title)}
+                    onClick={() => toggleModal(event.title, event.id)}
                     className="w-4 h-4"
                   />
                 </button>

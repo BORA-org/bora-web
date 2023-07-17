@@ -6,12 +6,14 @@ interface RemoveEventModalProps {
   eventName?: string;
   show: boolean;
   onClose: () => void;
+  onRemove: () => void;
 }
 
 const RemoveEventModal = ({
   eventName,
   show,
   onClose,
+  onRemove,
 }: RemoveEventModalProps) => (
   <>
     {show && (
@@ -45,7 +47,7 @@ const RemoveEventModal = ({
             </button>
             <button
               onClick={() => {
-                //
+                onRemove();
               }}
               className="bg-red-r1 text-white-w1 font-gilroy-bold ml-[10px] w-[160px] py-[10px] rounded-md"
             >

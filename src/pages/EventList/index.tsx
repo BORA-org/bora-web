@@ -24,6 +24,7 @@ export const EventList = observer(() => {
   const pendingEvents = events.filter((item) => !item.isPublic);
   const [modalOpen, setModalOpen] = useState(false);
   const [clickedChildName, setClickedChildName] = useState("");
+  const [clickedChildId, setClickedChildId] = useState("");
 
   const navigate = useNavigate();
 
@@ -48,10 +49,31 @@ export const EventList = observer(() => {
     }
   }, [reloadTrigger]);
 
-  const toggleModal = (eventTitle: any) => {
+  const toggleModal = (eventTitle: any, eventId: any) => {
     setModalOpen(!modalOpen);
     setClickedChildName(eventTitle);
-    //console.log(modalOpen, "clicked");
+    setClickedChildId(eventId);
+  };
+
+  const handleRemoveEvent = async (id: any, title: any) => {
+    toggleModal(id, title);
+    try {
+      await API.delete(`/events/${id}`);
+      console.log(id);
+      setReloadTrigger((prevState) => !prevState);
+      SwalMixin.fire({
+        icon: "success",
+        title: `Evento ${title} foi removido com sucesso!`,
+      });
+    } catch (err) {
+      SwalMixin.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Ocorreu um problema ao remover o evento, tente novamente.",
+      });
+      console.error("Error to register event:", err);
+      console.log(id);
+    }
   };
 
   return (
@@ -115,6 +137,9 @@ export const EventList = observer(() => {
           eventName={clickedChildName}
           show={modalOpen}
           onClose={() => setModalOpen(false)}
+          onRemove={() => {
+            handleRemoveEvent(clickedChildId, clickedChildName);
+          }}
         />
       )}
     </div>
