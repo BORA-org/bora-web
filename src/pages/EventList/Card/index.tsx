@@ -10,7 +10,7 @@ import "./styles.css";
 import { Event } from "../../../models/Event";
 import API from "../../../services/Api";
 import SwalMixin from "../../../ds/components/SwalMixin";
-import RemoveEventModal from "../../../ds/components/RemoveEventModal";
+import { Link } from "react-router-dom";
 
 interface CardProps {
   event: Event;
@@ -103,12 +103,14 @@ export const Card = ({ event, reloadTrigger, toggleModal }: CardProps) => {
                 </label>
               </div>
               <div className="flex justify-between">
-                <button
-                  className="flex items-center gap-2 text-sm font-gilroy-regular"
-                  onClick={() => {}}
-                >
-                  <EditIcon className="w-4 h-4" />
-                </button>
+                <Link to={`/edit-event/${event.id}`}>
+                  <button
+                    className="flex items-center gap-2 text-sm font-gilroy-regular"
+                    onClick={() => {}}
+                  >
+                    <EditIcon className="w-4 h-4" />
+                  </button>
+                </Link>
                 <button
                   className="flex items-center gap-2 text-sm font-gilroy-regular"
                   onClick={() => {}}
