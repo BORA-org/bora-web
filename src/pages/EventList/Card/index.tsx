@@ -15,9 +15,10 @@ import { Link } from "react-router-dom";
 interface CardProps {
   event: Event;
   reloadTrigger: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleModal: (eventTitle?: string, eventId?: string) => void;
 }
 
-export const Card = ({ event, reloadTrigger }: CardProps) => {
+export const Card = ({ event, reloadTrigger, toggleModal }: CardProps) => {
   const [isEventPublic, setIsEventPublic] = useState(!!event.isPublic);
 
   const isImageURLValid = () => {
@@ -110,12 +111,14 @@ export const Card = ({ event, reloadTrigger }: CardProps) => {
                     <EditIcon className="w-4 h-4" />
                   </button>
                 </Link>
-
                 <button
                   className="flex items-center gap-2 text-sm font-gilroy-regular"
                   onClick={() => {}}
                 >
-                  <RemoveIcon className="w-4 h-4" />
+                  <RemoveIcon
+                    onClick={() => toggleModal(event.title, event.id)}
+                    className="w-4 h-4"
+                  />
                 </button>
               </div>
             </div>
